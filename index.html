@@ -72,15 +72,15 @@
             layout: 'desktop',
             project: 'weather',
             version: 'master',
-            build: '4.0.352',
+            build: '4.0.363',
             host: 'http://api.gismeteo.ng/v3',
             api: 'v3',
             timestamps: {
-                now: new Date('2023/11/08 06:41:28'),
+                now: new Date('2023/11/27 14:29:02'),
                 local: Date.now()
             },
             dc: 'ost',
-            uniq: '24cff6dba53438cab0c1b244032bddba',
+            uniq: '853e63f49e669aa7750157741610e0f1',
             day: '1',
             section: 'error',
             counters: {
@@ -101,7 +101,7 @@
             slots: []
         },
         abtests: {
-            group: +'43',
+            group: +'44',
             cookie: 'ab_audience_2',
             current: null
         },
@@ -122,7 +122,7 @@
         info: {}
     }
     try {
-        M.state.city = {"source":"fetch","id":4368,"url":"/weather-moscow-4368/","slug":"moscow","kind":"M","coordinates":{"latitude":55.755798,"longitude":37.617599},"obsStationId":11886,"timeZone":180,"country":{"id":156,"url":"/catalog/russia/","code":"RU"},"district":{"id":4146,"url":"/catalog/russia/moscow/"},"subdistrict":null,"translations":{"ru":{"city":{"name":"Москва","nameP":"в Москве","nameR":""},"country":{"name":"Россия","nameP":"в России","nameR":"России"},"district":{"name":"Москва (город федерального значения)","nameP":"в Москве","nameR":"Москвы"},"subdistrict":null}},"lang":"ru","originUrl":"/weather-moscow-4368/","dates":{"local":"2023-11-08T09:41:28.220Z","utc":"2023-11-08T06:41:28.220Z"}}
+        M.state.city = {"source":"fetch","id":4618,"url":"/weather-samara-4618/","slug":"samara","kind":"M","coordinates":{"latitude":53.202202,"longitude":50.159599},"obsStationId":12186,"timeZone":240,"country":{"id":156,"url":"/catalog/russia/","code":"RU"},"district":{"id":275,"url":"/catalog/russia/samara-oblast/"},"subdistrict":{"id":3606,"url":"/catalog/russia/samara-oblast/samara/"},"translations":{"ru":{"city":{"name":"Самара","nameP":"в Самаре","nameR":""},"country":{"name":"Россия","nameP":"в России","nameR":"России"},"district":{"name":"Самарская область","nameP":"в Самарской области","nameR":"Самарской области"},"subdistrict":{"name":"Самара (городской округ)","nameP":"в Самаре","nameR":"Самары"}}},"lang":"ru","originUrl":"/weather-samara-4618/","dates":{"local":"2023-11-27T18:29:02.307Z","utc":"2023-11-27T14:29:02.307Z"}}
         M.state.weather.cw = null
     } catch (e) {
         console.error(e)
@@ -141,7 +141,7 @@
 
     
 
-    <script>(()=>{"use strict";var t=function(){function t(){}return t.setItem=function(t,e){localStorage.setItem(t,e)},t.getItem=function(t){return localStorage.getItem(t)},t.setObject=function(e,n){t.setItem(e,JSON.stringify(n))},t.getObject=function(e){var n={};try{n=JSON.parse(t.getItem(e))}catch(t){console.error(t)}return n instanceof Object?n:{}},t.getArray=function(e){var n=[];try{n=JSON.parse(t.getItem(e))}catch(t){console.error(t)}return Array.isArray(n)?n:[]},t.removeItem=function(t){localStorage.removeItem(t)},t.clear=function(){localStorage.clear()},t.hoursToExpireDate=function(t){var e=new Date;return e.setTime(e.getTime()+36e5*t),e.toUTCString()},t._setItem=function(e,n,i){void 0===i&&(i=7);var o=[e+"="+n];o.push("expires="+t.hoursToExpireDate(i)),o.push("path=/"),o.push("domain="+location.hostname),document.cookie=o.join(";")},t._getItem=function(t){var e=new RegExp("(?:^|; )"+t.replace(/([\.$?*|{}\(\)\[\]\\\/\+^])/g,"\\$1")+"=([^;]*)"),n=document.cookie.match(e);return n?decodeURIComponent(n[1]):""},t._removeItem=function(e){t._getItem(e)&&t._setItem(e,"",-1)},t}();window.GoogleAnalyticsObject="ga",window.ga=window.ga||function(){(window.ga.q=window.ga.q||[]).push(arguments)},window.ym=window.ym||function(){(window.ym.a=window.ym.a||[]).push(arguments)},window.ga.l=window.ym.l=+new Date,window.M.Storage=t,function(){var t=window.M.state.app.section;"weather"===window.M.state.app.project&&"1-day"===t&&(t="".concat(window.M.state.app.day,"-day"));var e=t;if("index"===t&&(e="".concat(window.M.state.app.project,"_index")),"news"===window.M.state.app.project)if("index"===t)t="news";else if("digest"===t)t="news_digest";else if(window.M.state.news&&window.M.state.news.category&&window.M.state.news.category.slug){var n=window.M.state.news.category.slug;e="".concat(t,"_").concat(n),t="news_".concat(n)}window.M.state.app.page=t,window.M.state.app.category=e}(),window.M.fn.getSectionName=function(){return window.M.state.app.page},window.M.fn.getWindowWidth=function(){return window.innerWidth},window.M.fn.getColumnsQty=function(){return window.innerWidth<=1230?2:3},window.M.fn.getABGroup=function(){return"default"},window.M.state.city=window.M.state.city;var e=function(){function t(t){this.state=window.M.state,this.test=t,this.ymName="AB_Tests",this.ymEvent="inGroup",this.name=this.test.name,this.version=this.test.version,this.group="default",this.init()}return t.prototype.setGroup=function(){var t=this.state.abtests.group;if(t)for(var e in this.test.audience)if(this.test.audience.hasOwnProperty(e)&&this.test.audience[e][0]<=t&&t<=this.test.audience[e][1]){this.group=e;break}},t.prototype.runTestFn=function(){this.test.fn&&"function"==typeof this.test.fn&&this.test.fn({group:this.group})},t.prototype.setAbGroupFn=function(){var t=this;window.M.fn.getABGroup=function(){return"default"===t.group?"default":"".concat(t.name.toLowerCase(),"-").concat(t.group)}},t.prototype.getInfo=function(){return{groupName:this.group,test:this.test,ymName:this.ymName,ymEvent:this.ymEvent}},t.prototype.init=function(){this.setGroup(),this.runTestFn(),this.setAbGroupFn()},t}(),n=function(){function n(t){this.tests=t,this.initTests=[],this.init()}return n.prototype.updateCookieLifetime=function(){t._getItem("ab_audience_2")&&t._setItem("ab_audience_2",t._getItem("ab_audience_2"),2160)},n.prototype.getCurrent=function(){var t,e;return null!==(e=null===(t=this.initTests[0])||void 0===t?void 0:t.getInfo())&&void 0!==e?e:null},n.prototype.init=function(){var t=this;this.tests.length&&(this.updateCookieLifetime(),this.tests.forEach((function(n){n.disabled||t.initTests.push(new e(n))})))},n}(),i=new n([{disabled:!1,version:"V1",audience:{test:[1,50]},name:"NG-2194"}]);window.M.state.abtests.current=i.getCurrent()})();</script>
+    <script>(()=>{"use strict";var t=function(){function t(){}return t.setItem=function(t,e){localStorage.setItem(t,e)},t.getItem=function(t){return localStorage.getItem(t)},t.setObject=function(e,n){t.setItem(e,JSON.stringify(n))},t.getObject=function(e){var n={};try{n=JSON.parse(t.getItem(e))}catch(t){console.error(t)}return n instanceof Object?n:{}},t.getArray=function(e){var n=[];try{n=JSON.parse(t.getItem(e))}catch(t){console.error(t)}return Array.isArray(n)?n:[]},t.removeItem=function(t){localStorage.removeItem(t)},t.clear=function(){localStorage.clear()},t.hoursToExpireDate=function(t){var e=new Date;return e.setTime(e.getTime()+36e5*t),e.toUTCString()},t._setItem=function(e,n,i){void 0===i&&(i=7);var o=[e+"="+n];o.push("expires="+t.hoursToExpireDate(i)),o.push("path=/"),o.push("domain="+location.hostname),document.cookie=o.join(";")},t._getItem=function(t){var e=new RegExp("(?:^|; )"+t.replace(/([\.$?*|{}\(\)\[\]\\\/\+^])/g,"\\$1")+"=([^;]*)"),n=document.cookie.match(e);return n?decodeURIComponent(n[1]):""},t._removeItem=function(e){t._getItem(e)&&t._setItem(e,"",-1)},t}();window.GoogleAnalyticsObject="ga",window.ga=window.ga||function(){(window.ga.q=window.ga.q||[]).push(arguments)},window.ym=window.ym||function(){(window.ym.a=window.ym.a||[]).push(arguments)},window.ga.l=window.ym.l=+new Date,window.M.Storage=t,function(){var t=window.M.state.app.section;"weather"===window.M.state.app.project&&"1-day"===t&&(t="".concat(window.M.state.app.day,"-day"));var e=t;if("index"===t&&(e="".concat(window.M.state.app.project,"_index")),"news"===window.M.state.app.project)if("index"===t)t="news";else if("digest"===t)t="news_digest";else if(window.M.state.news&&window.M.state.news.category.slug){var n=window.M.state.news.category.slug;e="".concat(t,"_").concat(n),t="news_".concat(n)}window.M.state.app.page=t,window.M.state.app.category=e}(),window.M.fn.getSectionName=function(){return window.M.state.app.page},window.M.fn.getWindowWidth=function(){return window.innerWidth},window.M.fn.getColumnsQty=function(){return window.innerWidth<=1230?2:3},window.M.fn.getABGroup=function(){return"default"},window.M.state.city=window.M.state.city;var e=function(){function t(t){this.state=window.M.state,this.test=t,this.ymName="AB_Tests",this.ymEvent="inGroup",this.name=this.test.name,this.version=this.test.version,this.group="default",this.init()}return t.prototype.setGroup=function(){var t=this.state.abtests.group;if(t)for(var e in this.test.audience)if(this.test.audience.hasOwnProperty(e)&&this.test.audience[e][0]<=t&&t<=this.test.audience[e][1]){this.group=e;break}},t.prototype.runTestFn=function(){this.test.fn&&"function"==typeof this.test.fn&&this.test.fn({group:this.group})},t.prototype.setAbGroupFn=function(){var t=this;window.M.fn.getABGroup=function(){return"default"===t.group?"default":"".concat(t.name.toLowerCase(),"-").concat(t.group)}},t.prototype.getInfo=function(){return{groupName:this.group,test:this.test,ymName:this.ymName,ymEvent:this.ymEvent}},t.prototype.init=function(){this.setGroup(),this.runTestFn(),this.setAbGroupFn()},t}(),n=function(){function n(t){this.tests=t,this.initTests=[],this.init()}return n.prototype.updateCookieLifetime=function(){t._getItem("ab_audience_2")&&t._setItem("ab_audience_2",t._getItem("ab_audience_2"),2160)},n.prototype.getCurrent=function(){var t,e;return null!==(e=null===(t=this.initTests[0])||void 0===t?void 0:t.getInfo())&&void 0!==e?e:null},n.prototype.init=function(){var t=this;this.tests.length&&(this.updateCookieLifetime(),this.tests.forEach((function(n){n.disabled||t.initTests.push(new e(n))})))},n}(),i=new n([{disabled:!1,version:"V1",audience:{test:[1,50]},name:"NG-2194"}]);window.M.state.abtests.current=i.getCurrent()})();</script>
 
     
 <script src="https://mc.yandex.ru/metrika/tag.js" async></script>
@@ -186,8 +186,8 @@
 
 
 
-    <link rel="stylesheet" href="/ngamg/assets/bundles/desktop-weather-ce9a618c9aa5e4c32d64.bundle.min.css">
-<script src="/ngamg/assets/desktop-weather-86f1a670fa0c7c72c615.js" defer></script>
+    <link rel="stylesheet" href="/ngamg/assets/bundles/desktop-weather-e2e2b633be835beda014.bundle.min.css">
+<script src="/ngamg/assets/desktop-weather-03355c8a0e48a66ad641.js" defer></script>
 
 </head>
 <body class="page page-404">
