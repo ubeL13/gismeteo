@@ -1,7 +1,7 @@
 from bs4 import BeautifulSoup
 import requests
 import csv
-from datetime import datetime, timedelta
+import datetime as dt
 import os
 
 def scrape_weather_data(year, month):
@@ -38,6 +38,24 @@ def scrape_weather_data(year, month):
         pres_evening = data_from_table_td[7].text
         wind_evening = data_from_table_td[10].text
 
+
+    data_from_table = []
+    if(month < 10):
+        moun = '0' + str(month)
+    else: moun = str(month)
+    for item in tab:
+        data_from_table_td = item.find_all('td')
+        data = data_from_table_td[0].text
+        if (len(data) == 1):
+            data = '0' + data
+        temp_morning = data_from_table_td[1].text
+        pres_morning = data_from_table_td[2].text
+        wind_morning = data_from_table_td[5].text
+        temp_evening = data_from_table_td[6].text
+        pres_evening = data_from_table_td[7].text
+        wind_evening = data_from_table_td[10].text
+
+
         data_from_table.append(
             {
                 "date": f"{date}.{month}.{year}",
@@ -65,34 +83,113 @@ def write_to_csv(data):
                 item["wind_evening"]
             ])
 
-        
 
-#######
-# with open('dataset.csv', newline='') as f:
-#     fieldnames = ['data', 'temp_morning', 'presure_morning', 'wind_morning', 'temp_evening', 'presure_evening', 'wind']
-#     reader = csv.DictReader(f, fieldnames=fieldnames)
-#     for row in reader:
-#         file_writer = csv.writer(open('X.csv', 'a', newline=''), lineterminator="\r")
-#         file_writer.writerow([row['data']                  ])
-#         file_writer = csv.writer(open('Y.csv', 'a', newline=''), lineterminator="\r")
-#         file_writer.writerow([row['temp_morning'], row['presure_morning'], row['wind_morning'], row['temp_evening'], row['presure_evening'], row['wind']])
-# ####
+def split_csv_by_columns(input_file):
+    with open(input_file, 'r', newline='') as f:
+        with open('X.csv', 'a', newline='') as x_file, open('Y.csv', 'a', newline='') as y_file:
+            names = ['date', 'temp_morning', 'pressure_morning', 'wind_morning', 'temp_evening', 'pressure_evening', 'wind']
+            reader = csv.DictReader(f, fieldnames=names)
 
-with open('dataset.csv', newline='') as f:
-    with open('X.csv', 'a', newline='') as x_file, open('Y.csv', 'a', newline='') as y_file:
-        names = ['date', 'temp_morning', 'pressure_morning', 'wind_morning', 'temp_evening', 'pressure_evening', 'wind']
+            x_writer = csv.writer(x_file, lineterminator="\n")
+            y_writer = csv.writer(y_file, lineterminator="\n")
+
+            for row in reader:
+                x_writer.writerow([row['date']])
+                y_writer.writerow([row['temp_morning'], row['pressure_morning'], row['wind_morning'], row['temp_evening'], row['pressure_evening'], row['wind']])
+
+
+
+def write_data_by_year(input_file, output_folder):
+    output_file = f'{year}.csv'
+    output_folder = 'years'
+    os.makedirs(output_folder, exist_ok=True)
+    output_file = os.path.join(output_folder, output_file)
+    
+    with open(input_file, newline='') as f:
+        names = ['date', 'temp_morning', 'pressure_morning', 'wind_morning', 'temp_evening', 'pressure_evening', 'wind_evening']
         reader = csv.DictReader(f, fieldnames=names)
+        
+        with open(output_file, 'w', newline='') as file_writer:
+            writer = csv.writer(file_writer, lineterminator="\n")
+            for row in reader:
+                year_in_row = row['date'].split('-')[0]
+                if year_in_row == str(year):
+                    writer.writerow([row['date'], row["temp_morning"], row["pressure_morning"], row["wind_morning"], row["temp_evening"], row["pressure_evening"], row["wind_evening"]])
 
-        x_writer = csv.writer(x_file, lineterminator="\r")
-        y_writer = csv.writer(y_file, lineterminator="\r")
 
+def process_year_files(folder_path):
+    for file_name in os.listdir(folder_path):
+        input_file = os.path.join(folder_path, file_name)
+        
+        with open(input_file, 'r', newline='') as file:
+            fieldnames = ['date', 'temp_morning', 'pressure_morning', 'wind_morning', 'temp_evening', 'pressure_evening', 'wind_evening']
+            reader = csv.DictReader(file, fieldnames=fieldnames)
+            try:
+                first_row = next(reader)
+            except StopIteration:
+                file.close()
+                os.remove(input_file)
+                continue
+            year = first_row['date'][:4]
+            first_date = first_row['date'][5:7] + first_row['date'][8:10]
+            last_date = None
+            for row in reader:
+                last_date = row['date'][5:7] + row['date'][8:10]
+            if last_date is None:
+                last_date = first_date
+            if last_date:
+                output_file = os.path.join(folder_path, f'{year}{first_date}-{year}{last_date}.csv')
+                file.close()
+                os.rename(input_file, output_file)
+
+
+
+
+def split_csv_by_weeks(input_file):
+    with open(input_file, newline='') as file:
+        fieldnames = ['date', 'temp_morning', 'pressure_morning', 'wind_morning', 'temp_evening', 'pressure_evening', 'wind_evening']
+        reader = csv.DictReader(file, fieldnames=fieldnames)
+        week_start = None
+        week_number = 1
+        week_data = []
+        
         for row in reader:
-            x_writer.writerow([row['date']])
-            y_writer.writerow([row['temp_morning'], row['pressure_morning'], row['wind_morning'], row['temp_evening'], row['pressure_evening'], row['wind']])
+            date = dt.datetime.strptime(row['date'], '%Y-%m-%d')
+            day_of_week = date.weekday()
+
+            if week_start is None:
+                week_start = date - dt.timedelta(days=day_of_week)
+
+            if day_of_week == 6:
+                output_folder = 'week'
+                os.makedirs(output_folder, exist_ok=True)
+                output_file = os.path.join(output_folder, f'week-{week_number}.csv')
+
+                with open(output_file, 'w', newline='') as file_writer:
+                    writer = csv.writer(file_writer, lineterminator="\n")
+                    for week_data_row in week_data:
+                        writer.writerow(week_data_row)
+
+                week_number += 1
+                week_start = None
+                week_data = []
+
+            week_data.append([row['date'], row["temp_morning"], row["pressure_morning"], row["wind_morning"], row["temp_evening"], row["pressure_evening"], row["wind_evening"]])
+
+
+
+
+
+    
 
 
 for year in range(1997, 2024):
     for month in range(1, 13):
         weather_data = scrape_weather_data(year, month)
         write_to_csv(weather_data)
-       
+split_csv_by_columns('dataset.csv')
+for year in range(1997, 2024):
+    for month in range(1, 13):
+        write_data_by_year('dataset.csv', 'years')
+        process_year_files('years')
+split_csv_by_weeks('dataset.csv')
