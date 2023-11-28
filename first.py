@@ -1,7 +1,8 @@
 from bs4 import BeautifulSoup
 import requests
 import csv
-import os;
+from datetime import datetime, timedelta
+import os
 
 def scrape_weather_data(year, month):
     url = "https://www.gismeteo.ru/diary/4618/" + str(year) + "/" + str(month) + "/"
@@ -29,7 +30,7 @@ def scrape_weather_data(year, month):
     data_from_table = []
     for item in tab:
         data_from_table_td = item.find_all('td')
-        data = data_from_table_td[0].text
+        date = data_from_table_td[0].text
         temp_morning = data_from_table_td[1].text
         pres_morning = data_from_table_td[2].text
         wind_morning = data_from_table_td[5].text
@@ -39,12 +40,12 @@ def scrape_weather_data(year, month):
 
         data_from_table.append(
             {
-                "data": f"{data}.{month}.{year}",
+                "date": f"{date}.{month}.{year}",
                 "temp_morning": temp_morning,
-                "presure_morning": pres_morning,
+                "pressure_morning": pres_morning,
                 "wind_morning": wind_morning,
                 "temp_evening": temp_evening,
-                "presure_evening": pres_evening,
+                "pressure_evening": pres_evening,
                 "wind_evening": wind_evening
             }
         )
@@ -56,46 +57,42 @@ def write_to_csv(data):
         file_writer = csv.writer(csvfile, delimiter=",", lineterminator="\r")
         for item in data:
             file_writer.writerow([
-                item["data"],
+                item["date"],
                 item["temp_morning"],
-                item["presure_morning"],
+                item["pressure_morning"],
                 item["temp_evening"],
-                item["presure_evening"],
+                item["pressure_evening"],
                 item["wind_evening"]
             ])
 
+        
 
-def split_csv(data, output_file_x, output_file_y):
-    with open('dataset.csv', 'r') as file:
-        reader = csv.reader(file)
-        rows = list(reader)
+#######
+# with open('dataset.csv', newline='') as f:
+#     fieldnames = ['data', 'temp_morning', 'presure_morning', 'wind_morning', 'temp_evening', 'presure_evening', 'wind']
+#     reader = csv.DictReader(f, fieldnames=fieldnames)
+#     for row in reader:
+#         file_writer = csv.writer(open('X.csv', 'a', newline=''), lineterminator="\r")
+#         file_writer.writerow([row['data']                  ])
+#         file_writer = csv.writer(open('Y.csv', 'a', newline=''), lineterminator="\r")
+#         file_writer.writerow([row['temp_morning'], row['presure_morning'], row['wind_morning'], row['temp_evening'], row['presure_evening'], row['wind']])
+# ####
 
-    # Определение количества строк
-    num_rows = len(rows)
-    half_rows = num_rows // 2
+with open('dataset.csv', newline='') as f:
+    with open('X.csv', 'a', newline='') as x_file, open('Y.csv', 'a', newline='') as y_file:
+        names = ['date', 'temp_morning', 'pressure_morning', 'wind_morning', 'temp_evening', 'pressure_evening', 'wind']
+        reader = csv.DictReader(f, fieldnames=names)
 
-    # Разбивка на два списка
-    x_rows = rows[:half_rows]
-    y_rows = rows[half_rows:]
+        x_writer = csv.writer(x_file, lineterminator="\r")
+        y_writer = csv.writer(y_file, lineterminator="\r")
 
-    # Запись в файлы X.csv и Y.csv
-    with open(output_file_x, 'w', newline='') as file:
-        writer = csv.writer(file)
-        writer.writerows(x_rows)
-
-    with open(output_file_y, 'w', newline='') as file:
-        writer = csv.writer(file)
-        writer.writerows(y_rows)
-
-# Пример использования
-
-
-
-
+        for row in reader:
+            x_writer.writerow([row['date']])
+            y_writer.writerow([row['temp_morning'], row['pressure_morning'], row['wind_morning'], row['temp_evening'], row['pressure_evening'], row['wind']])
 
 
 for year in range(1997, 2024):
     for month in range(1, 13):
         weather_data = scrape_weather_data(year, month)
         write_to_csv(weather_data)
-        split_csv('dataset.csv', 'X.csv', 'Y.csv')
+       
