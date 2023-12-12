@@ -4,87 +4,87 @@ import csv
 import datetime as dt
 import os
 
-# def scrape_weather_data(year, month):
-#     url = "https://www.gismeteo.ru/diary/4618/" + str(year) + "/" + str(month) + "/"
-#     headers = {
-#         "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7",
-#         "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/117.0.0.0 Safari/537.36 Edg/117.0.2045.41"
-#     }
+def scrape_weather_data(year, month):
+    url = "https://www.gismeteo.ru/diary/4618/" + str(year) + "/" + str(month) + "/"
+    headers = {
+        "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7",
+        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/117.0.0.0 Safari/537.36 Edg/117.0.2045.41"
+    }
 
-#     req = requests.get(url, headers=headers)
-#     src = req.text
+    req = requests.get(url, headers=headers)
+    src = req.text
 
-#     try:
-#         with open("index.html", "w") as file:
-#             file.write(src)
-#     except Exception:
-#         return []
+    try:
+        with open("index.html", "w") as file:
+            file.write(src)
+    except Exception:
+        return []
 
-#     soup = BeautifulSoup(src, "lxml")
+    soup = BeautifulSoup(src, "lxml")
 
-#     try:
-#         tab = soup.find("table").find("tbody").find_all("tr")
-#     except Exception:
-#         return []
-
-
-#     data_from_table = []
-#     if(month < 10):
-#         moun = '0' + str(month)
-#     else: moun = str(month)
-#     for item in tab:
-#         data_from_table_td = item.find_all('td')
-#         data = data_from_table_td[0].text
-#         if (len(data) == 1):
-#             data = '0' + data
-#         temp_morning = data_from_table_td[1].text
-#         pres_morning = data_from_table_td[2].text
-#         wind_morning = data_from_table_td[5].text
-#         temp_evening = data_from_table_td[6].text
-#         pres_evening = data_from_table_td[7].text
-#         wind_evening = data_from_table_td[10].text
+    try:
+        tab = soup.find("table").find("tbody").find_all("tr")
+    except Exception:
+        return []
 
 
-#         data_from_table.append(
-#             {
-#                 "date": str(year) + "-" + moun + "-" + data,
-#                 "temp_morning": temp_morning,
-#                 "pressure_morning": pres_morning,
-#                 "wind_morning": wind_morning,
-#                 "temp_evening": temp_evening,
-#                 "pressure_evening": pres_evening,
-#                 "wind_evening": wind_evening
-#             }
-#         )
-
-#     return data_from_table
-
-# def write_to_csv(data):
-#     with open('dataset.csv', 'a', newline='') as csvfile:
-#         file_writer = csv.writer(csvfile, delimiter=",", lineterminator="\r")
-#         for item in data:
-#             file_writer.writerow([
-#                 item["date"],
-#                 item["temp_morning"],
-#                 item["pressure_morning"],
-#                 item["temp_evening"],
-#                 item["pressure_evening"],
-#                 item["wind_evening"]
-#             ])
+    data_from_table = []
+    if(month < 10):
+        moun = '0' + str(month)
+    else: moun = str(month)
+    for item in tab:
+        data_from_table_td = item.find_all('td')
+        data = data_from_table_td[0].text
+        if (len(data) == 1):
+            data = '0' + data
+        temp_morning = data_from_table_td[1].text
+        pres_morning = data_from_table_td[2].text
+        wind_morning = data_from_table_td[5].text
+        temp_evening = data_from_table_td[6].text
+        pres_evening = data_from_table_td[7].text
+        wind_evening = data_from_table_td[10].text
 
 
-# def split_csv_by_columns(input_file):
-#     with open(input_file, 'r', newline='') as f:
-#         with open('X.csv', 'a', newline='') as x_file, open('Y.csv', 'a', newline='') as y_file:
-#             names = ['date', 'temp_morning', 'pressure_morning', 'wind_morning', 'temp_evening', 'pressure_evening', 'wind']
-#             reader = csv.DictReader(f, fieldnames=names)
+        data_from_table.append(
+            {
+                "date": str(year) + "-" + moun + "-" + data,
+                "temp_morning": temp_morning,
+                "pressure_morning": pres_morning,
+                "wind_morning": wind_morning,
+                "temp_evening": temp_evening,
+                "pressure_evening": pres_evening,
+                "wind_evening": wind_evening
+            }
+        )
 
-#             x_writer = csv.writer(x_file, lineterminator="\n")
-#             y_writer = csv.writer(y_file, lineterminator="\n")
+    return data_from_table
 
-#             for row in reader:
-#                 x_writer.writerow([row['date']])
-#                 y_writer.writerow([row['temp_morning'], row['pressure_morning'], row['wind_morning'], row['temp_evening'], row['pressure_evening'], row['wind']])
+def write_to_csv(data):
+    with open('dataset.csv', 'a', newline='') as csvfile:
+        file_writer = csv.writer(csvfile, delimiter=",", lineterminator="\r")
+        for item in data:
+            file_writer.writerow([
+                item["date"],
+                item["temp_morning"],
+                item["pressure_morning"],
+                item["temp_evening"],
+                item["pressure_evening"],
+                item["wind_evening"]
+            ])
+
+
+def split_csv_by_columns(input_file):
+    with open(input_file, 'r', newline='') as f:
+        with open('X.csv', 'a', newline='') as x_file, open('Y.csv', 'a', newline='') as y_file:
+            names = ['date', 'temp_morning', 'pressure_morning', 'wind_morning', 'temp_evening', 'pressure_evening', 'wind']
+            reader = csv.DictReader(f, fieldnames=names)
+
+            x_writer = csv.writer(x_file, lineterminator="\n")
+            y_writer = csv.writer(y_file, lineterminator="\n")
+
+            for row in reader:
+                x_writer.writerow([row['date']])
+                y_writer.writerow([row['temp_morning'], row['pressure_morning'], row['wind_morning'], row['temp_evening'], row['pressure_evening'], row['wind']])
 
 
 
