@@ -251,7 +251,7 @@ class Window(QMainWindow):
     def _divide_by_week(self):
         """Divide list by weeks and create the csv_files. Return None."""
         csv_file = self.get_file()
-        weeks.divide_by_weeks(csv_file)
+        weeks.divide_by_week(csv_file)
 
     def show_new_window(self, checked):
         if self.calendar is None:
