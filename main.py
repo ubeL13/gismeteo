@@ -49,7 +49,7 @@ for year in range(1997, 2024):
 
             data_from_table.append(
                 {
-                    "data": str(year) + "-" + moun + "-" + data,
+                    "date": str(year) + "-" + moun + "-" + data,
                     "temp_morning": temp_morning,
                     "presure_morning": pres_morning,
                     "wind_morning": wind_morning,
@@ -64,7 +64,7 @@ for year in range(1997, 2024):
                 file_writer = csv.writer(csvfile, delimiter=",", lineterminator="\r")
                 file_writer.writerow(
                     [
-                        item["data"],
+                        item["date"],
                         item["temp_morning"],
                         item["presure_morning"],
                         item["wind_morning"],
